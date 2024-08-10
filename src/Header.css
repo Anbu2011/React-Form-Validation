@@ -1,0 +1,9 @@
+body{
+    padding-top: 2rem;
+}
+h1{
+    border: 5px solid black;
+    width : 600px;
+    font-size: 3.2em;
+    line-height: 1.1;
+}
