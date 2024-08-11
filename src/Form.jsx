@@ -42,6 +42,8 @@ const Form = () => {
         return checkPassword.test(password);
     };
 
+
+
     const handleNameChange = (event) =>{
         setName(event.target.value);
         setNameError("");
@@ -86,13 +88,6 @@ const Form = () => {
         setNewNationError("")
     }
 
-    // const afterSubmit = () =>{
-    //     setName("");
-    //     setEmail("");
-    //     setPassword("");
-    //     setDate("");
-    //     setNewNation("");
-    // }
 
 
     const nameErrorFunction = () =>{
@@ -174,103 +169,115 @@ const Form = () => {
         if(nameErrorFunction()  && emailErrorFunction() && passwordErrorFunction() && dateErrorFunction() && hobbyErrorFunction() && genderErrorFunction() && newNationErrorFunction()){
             if(newNation!=="" && nationality==="other"){
                 alert("Form Submitted Successfully!!");
-                console.log(name,email,password,date,hobby,gender,nationality,newNation);
-                // afterSubmit()
+                console.log(name,email,password,date,hobby,gender,nationality);
             }
+
             if(nationality!=="other"){
                 alert("Form Submitted Successfully!!!!!!");
                 console.log(name,email,password,date,hobby,gender,nationality);
-                // afterSubmit()
             }
         }
     };
 
+    const handleFormReset = (event) =>{
+        setName("");
+        setEmail("");
+        setPassword("");
+        setDate("");
+        setHobby([]);
+        setGender("");
+        setNewNation("");
+    };
+
     return (
         <>
-        <form onSubmit={handleFormSubmit}>
+        <form>
 
-            <div>
-                <label htmlFor="name">Name : </label>
-                <input type="text"  onChange={handleNameChange} placeholder='Enter Your Name'/>
-                {nameError && <p style={{color: 'red' , marginTop:'0px'}}>{nameError}</p>}
-            </div>
-
-
-            <div>
-                <label htmlFor="email">Email : </label>
-                <input type="text" value={email} onChange={handleEmailChange} placeholder='Enter Email id'/>
-                {emailError && <p style={{color:'red' , marginTop:'0px'}}>{emailError}</p>}
-            </div>
-
-
-            <div>
-                <label htmlFor="password">Password : </label>
-                <input type="text" value={password} onChange={handlePasswordChange} placeholder='Enter the Password'/>
-                {passwordError && <p style={{color:'red', marginTop:'0px'}}>{passwordError}</p>}
-            </div>
-
-            <div>
-                <label htmlFor="date">DOB : </label>
-                <input type="date" value={date} onChange={handleDate} placeholder='Enter Your DOB'/>
-                {dateError && <p style={{color:'red' , marginTop:'0px'}}>{dateError}</p>}
-            </div>
-
-            <div>
-                <label>Hobbies : </label>
-                <label htmlFor="reading">
-                    <input type="checkbox" value="reading" onChange={handleHobbyChange} />
-                    Reading
-                </label>
-
-                <label htmlFor="traveling">
-                    <input type="checkbox" value="traveling" onChange={handleHobbyChange} />
-                    Traveling
-                </label>
-
-                <label htmlFor="cooking">
-                    <input type="checkbox" value="cooking" onChange={handleHobbyChange} />
-                    Cooking
-                </label>
-            
-                <label htmlFor="sports">
-                    <input type="checkbox" value="sports" onChange={handleHobbyChange} />
-                    Sports
-                </label>
-                {hobbyError && (<p style={{color:"red",marginTop:'0px'}}>{hobbyError}</p>)}
-            </div>
-
-            <div>
-                <label>Gender : </label>
-                <input type="radio" value='male' onChange={handleGenderChange} name="gender" />
-                <label htmlFor="male">Male</label>
+            <div className='name'>
+                <label className='name_label' htmlFor="name">Name : </label>
+                <input type="text"  value={name} onChange={handleNameChange} placeholder='Enter Your Name'/>
                 
-                <input type="radio" value='female' onChange={handleGenderChange} name="gender" />
-                <label htmlFor="female">Female</label>
-                {genderError && (<p style={{color:'red',marginTop:'0px'}}>{genderError}</p>)}
+                {nameError && <p style={{color: 'red' , margin:'0px'}}>{nameError}</p>}
             </div>
 
-            <div>
-                <label htmlFor="nation">Nationality : </label>
-                <select name="nationality" value={nationality} onChange={handleNationalityChange} id="nationality">
+
+            <div className='email'>
+                <label className='email_label' htmlFor="email">Email : </label>
+                <input type="text" value={email} onChange={handleEmailChange} placeholder='Enter Email id'/>
+              
+                {emailError && <p style={{color:'red' , margin:'0px'}}>{emailError}</p>}
+            </div>
+
+
+            <div className='password'>
+                <label className='password_label' htmlFor="password">Password : </label>
+                <input type="text" value={password} onChange={handlePasswordChange} placeholder='Enter the Password'/>
+    
+                {passwordError && <p style={{color:'red', margin:'0px'}}>{passwordError}</p>}
+            </div>
+
+            <div className='date'>
+                <label className='date_label' htmlFor="date">DOB : </label>
+                <input type="date" value={date} onChange={handleDate} placeholder='Enter Your DOB'/>
+                {dateError && <p style={{color:'red' , margin:'0px'}}>{dateError}</p>}
+            </div>
+
+            <div className='hobbies'>
+                <label className='hobby-label'>Hobbies : </label>
+                <div className='check-boxes'>
+                    <label htmlFor="reading">
+                        <input type="checkbox" className="tick-box" value="reading" onChange={handleHobbyChange} checked={hobby.includes('reading')}/>
+                        Reading
+                    </label>
+
+                    <label htmlFor="traveling">
+                        <input type="checkbox" value="traveling" onChange={handleHobbyChange} checked={hobby.includes('traveling')}/>
+                        Traveling
+                    </label>
+
+                    <label htmlFor="cooking">
+                        <input type="checkbox" value="cooking" onChange={handleHobbyChange} checked={hobby.includes('cooking')}/>
+                        Cooking
+                    </label>
+                
+                    <label htmlFor="sports">
+                        <input type="checkbox" value="sports" onChange={handleHobbyChange} checked={hobby.includes('sports')}/>
+                        Sports
+                    </label>
+                </div>  
+                {hobbyError && (<p style={{color:"red",margin:'0px'}}>{hobbyError}</p>)}
+            </div>
+
+            <div className='gender'>
+                <label className='gender-label'>Gender : </label>
+                
+                <input type="radio" value='male' onChange={handleGenderChange} name="gender" checked={gender==='male'}/>
+                <label htmlFor="male">Male</label>
+                    
+                <input type="radio" value='female' onChange={handleGenderChange} name="gender" checked={gender==='female'}/>
+                <label htmlFor="female">Female</label>
+                
+                {genderError && (<p style={{color:'red',margin:'0px',}}>{genderError}</p>)}
+            </div>
+
+            <div className='nation'>
+                <label className="nation-label" htmlFor="nation">Nationality : </label>
+                <select className='nation-select' name="nationality" value={nationality} onChange={handleNationalityChange} id="nationality">
                     <option value="indian">Indian</option>
                     <option value="other">Other</option>
                     {newNation && (<option value={newNation}>{newNation}</option>)}
                 </select>
 
-                    {nationality==="other" && (<input type='text' value={newNation} onChange={handleNewNation}  placeholder='specify the nation' />)}
+                {nationality==="other" && (<input type='text' value={newNation} onChange={handleNewNation}  placeholder='specify the nation' />)}
                 
-                    {nationality==='other' && newNationError && (<p style={{color:'red' , marginTop:'0px'}}>{newNationError}</p>)}
+                {nationality==='other' && newNationError && (<p style={{color:'red' , margin:'0px'}}>{newNationError}</p>)}
                 
             </div>
             
 
-            <div>
-                <div>
-                    <button type='submit'>Submit</button>
-                </div>
-                {/* <div>
-                    <button type='submit'>Reset</button>
-                </div> */}
+            <div className='btn'>
+                <button type='submit' onClick={handleFormSubmit}>Submit</button>
+                <button type="button" onClick={handleFormReset}>Reset</button>
             </div>
 
         </form>
