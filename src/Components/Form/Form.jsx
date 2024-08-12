@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import './App.css'
 import './Form.css'
 
 const Form = () => {
@@ -169,12 +168,12 @@ const Form = () => {
         if(nameErrorFunction()  && emailErrorFunction() && passwordErrorFunction() && dateErrorFunction() && hobbyErrorFunction() && genderErrorFunction() && newNationErrorFunction()){
             if(newNation!=="" && nationality==="other"){
                 alert("Form Submitted Successfully!!");
-                console.log(name,email,password,date,hobby,gender,nationality);
+                // console.log(name,email,password,date,hobby,gender,nationality);
             }
 
             if(nationality!=="other"){
                 alert("Form Submitted Successfully!!!!!!");
-                console.log(name,email,password,date,hobby,gender,nationality);
+                // console.log(name,email,password,date,hobby,gender,nationality);
             }
         }
     };
