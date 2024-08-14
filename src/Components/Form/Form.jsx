@@ -3,279 +3,206 @@ import './Form.css'
 
 const Form = () => {
 
-    const [name,setName] = useState("");
-    const [nameError, setNameError] = useState("");
+    const [formData, setFormData] = useState({
+        name : '',
+        email : '',
+        password : '',
+        dob : '',
+        hobbies : [],
+        gender : '',
+        nationality : 'Indian',
+        newNation : ''
+    })
 
-    const [email,setEmail] = useState("");
-    const [emailError,setEmailError] =useState("");
+    const [formErrors, setFormErrors] = useState({});
 
-    const [password,setPassword] = useState("");
-    const [passwordError, setPasswordError] = useState("");
+    const handleInputChange = (event) =>{
+        const {name, value, type, checked} = event.target;
 
-    const [date,setDate] = useState("");
-    const [dateError,setDateError] = useState("");
+        if (type === 'checkbox') {
+            const updatedHobbies = checked ? [...formData.hobbies, value] : formData.hobbies.filter(hobby => hobby !== value);
+            
+            setFormData((prevData) => ({...prevData, hobbies: updatedHobbies, }));
+        } 
+        
+        if (formErrors.hobbies) {
+            setFormErrors((prevErrors) => {
+                const { hobbies, ...rest } = prevErrors;
+                return rest;
+            });
+        }   else {
+                setFormData((prevData) => ({...prevData, [name]: value,}));
+        }
 
-    const [nationality,setNationality] = useState("");
-    const [newNation, setNewNation] = useState("");
-    const [newNationError, setNewNationError] = useState("");
-
-    const [hobby,setHobby] = useState([]);
-    const [hobbyError,setHobbyError] = useState("");
-
-    const [gender,setGender] = useState("");
-    const [genderError, setGenderError] = useState("");
-
-
-    const checkNamePatterns = () => {
-        const checkName = /^[A-Za-z\s]+$/;
-        return checkName.test(name);
-    };
-
-    const checkEmailPatterns = () =>{
-        const checkEmail = /[a-zA-Z0-9.*%±]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
-        return checkEmail.test(email);
-    };
-
-    const checkPasswordPatterns = () =>{
-        const checkPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        return checkPassword.test(password);
-    };
-
-
-
-    const handleNameChange = (event) =>{
-        setName(event.target.value);
-        setNameError("");
-    };
-
-    const handleEmailChange = (event) =>{
-        setEmail(event.target.value);
-        setEmailError("");
-    };
-
-    const handlePasswordChange = (event) =>{
-        setPassword(event.target.value);
-        setPasswordError("");
-    };
-
-    const handleDate = (event) =>{
-        setDate(event.target.value);
-        setDateError("");
-    };
-
-    const handleHobbyChange = (event) =>{
-        const {value, checked} = event.target
-        if(checked){
-            setHobby((prevHobbies)  => [...prevHobbies, value]);
-            setHobbyError("");
-        } else{
-            setHobby((prevHobbies) => prevHobbies.filter((h) => h!==value));
+        if (formErrors[name]) {
+            setFormErrors((prevErrors) => {
+                const { [name]: error, ...rest } = prevErrors;
+                return rest;
+            });
         }
     };
-
-    const handleGenderChange = (event) =>{
-        setGender(event.target.value);
-        setGenderError("");
-    }
-
-    const handleNationalityChange = (event) =>{
-        setNationality(event.target.value);
-    }
     
-    const handleNewNation = (event) =>{
-        setNewNation(event.target.value);
-        setNewNationError("")
-    }
 
+    
+    const validation = () =>{
+        const newErrors = {};
+        const namePattern = /^[a-zA-Z\s]+$/;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-
-    const nameErrorFunction = () =>{
-        if (name.trim() === '') {
-            setNameError('Name is required.');
-        } else if(!checkNamePatterns(name)){
-            setNameError("Name error");
+        if(!formData.name){
+            newErrors.name = 'Name is required';
+        } else if(!namePattern.test(formData.name)){
+            newErrors.name = 'Name Error';
         }
-        else{
-            setNameError("");
-            return true;
-        }
-    }
 
-    const emailErrorFunction = () =>{
-        if (email.trim() === '') {
-            setEmailError('Email is required.');
-        } else if(!checkEmailPatterns(email)){
-            setEmailError("Email error");
-        } else{
-            setEmailError("");
-            return true;
+        if(!formData.email){
+            newErrors.email = 'email is required';
+        } else if(!emailPattern.test(formData.email)){
+            newErrors.email = 'Email Error';
         }
-    }
 
-    const passwordErrorFunction = () =>{
-        if (password.trim() === '') {
-            setPasswordError('Password is required.');
-        } else if(!checkPasswordPatterns(password)){
-            setPasswordError("not an strong password");
-        } else{
-            setPasswordError("");
-            return true;
+        if(!formData.password){
+            newErrors.password = 'password is required';
+        } else if(!passwordPattern.test(formData.password)){
+            newErrors.password = 'password Error';
         }
-    }
+        
 
-    const dateErrorFunction = () =>{
         const currentDate = new Date();
-        const choosedDate = new Date(date);
-        if (date===""){
-            setDateError("Select Your DoB");
-        } else if( choosedDate > currentDate){
-            setDateError("invalid date");
-        } else{
-            setDateError("");
-            return true;
+        const choosedDate = new Date(formData.dob);
+        if(!formData.dob){
+            newErrors.dob = 'DOB is required';
+        } else if(choosedDate > currentDate){
+            newErrors.dob = 'Invalid Date';
         }
+
+        if (formData.hobbies.length === 0) {
+            newErrors.hobbies = "Please choose at least one hobby!";
+        }
+
+        if(!formData.gender){
+            newErrors.gender = 'Gender is Required';
+        }
+
+        if(formData.nationality === 'other' && formData.newNation === ""){
+            newErrors.newNation = "please Enter the Nationality"
+        }
+
+        setFormErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     }
 
-    const hobbyErrorFunction = () =>{
-        if(hobby.length === 0){
-            setHobbyError("Please Choose atleast one Hobby!!"); 
-        } else{
-            setHobbyError("");
-            return true;
-        }
-    }
 
-    const genderErrorFunction = () =>{
-        if(gender===""){
-            setGenderError("Please select the gender!!");
-        } else{
-            setGenderError("");
-            return true;
-        }
-    }
-
-    const newNationErrorFunction = () =>{
-        if(newNation==="" && nationality==="other"){
-            setNewNationError("Please Enter Your Nation")
-        } else{
-            setNewNationError("")
-            return true;
-        }
-    }
-
-    const handleFormSubmit = (event)=> {
+    const handleFormSubmit = (event) =>{
         event.preventDefault();
-        if(nameErrorFunction()  && emailErrorFunction() && passwordErrorFunction() && dateErrorFunction() && hobbyErrorFunction() && genderErrorFunction() && newNationErrorFunction()){
-            if(newNation!=="" && nationality==="other"){
-                alert("Form Submitted Successfully!!");
-                // console.log(name,email,password,date,hobby,gender,nationality);
-            }
 
-            if(nationality!=="other"){
-                alert("Form Submitted Successfully!!!!!!");
-                // console.log(name,email,password,date,hobby,gender,nationality);
-            }
+        if (validation()){
+            alert('Form Submitted Successfully!!');
+            // console.log(formData.name,formData.email,formData.password,formData.dob,formData.hobbies,formData.gender,formData.nationality)
         }
     };
 
-    const handleFormReset = (event) =>{
-        setName("");
-        setEmail("");
-        setPassword("");
-        setDate("");
-        setHobby([]);
-        setGender("");
-        setNewNation("");
+    const handleFormReset = () => {
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          dob: '',
+          hobbies : [],
+          gender: '',
+          nationality: 'Indian',
+          newNation: '',
+        });
+        setFormErrors({});
     };
-
     return (
         <>
-        <form>
+        <form onSubmit={handleFormSubmit}>
 
             <div className='name'>
-                <label className='name_label' htmlFor="name">Name : </label>
-                <input type="text"  value={name} onChange={handleNameChange} placeholder='Enter Your Name'/>
+                <label htmlFor="name">Name : </label>
+                <input type="text"  name='name' value={formData.name} onChange={handleInputChange} placeholder='Enter Your Name'/>
                 
-                {nameError && <p style={{color: 'red' , margin:'0px'}}>{nameError}</p>}
+                {formErrors.name && <p style={{color: 'red' , margin:'0px'}}>{formErrors.name}</p>}
             </div>
 
 
             <div className='email'>
-                <label className='email_label' htmlFor="email">Email : </label>
-                <input type="text" value={email} onChange={handleEmailChange} placeholder='Enter Email id'/>
+                <label htmlFor="email">Email : </label>
+                <input type="email" name='email' value={formData.email} onChange={handleInputChange} placeholder='Enter Email id'/>
               
-                {emailError && <p style={{color:'red' , margin:'0px'}}>{emailError}</p>}
+                {formErrors.email && <p style={{color:'red' , margin:'0px'}}>{formErrors.email}</p>}
             </div>
 
 
             <div className='password'>
-                <label className='password_label' htmlFor="password">Password : </label>
-                <input type="text" value={password} onChange={handlePasswordChange} placeholder='Enter the Password'/>
+                <label htmlFor="password">Password : </label>
+                <input type="password" name='password' value={formData.password} onChange={handleInputChange} placeholder='Enter the Password'/>
     
-                {passwordError && <p style={{color:'red', margin:'0px'}}>{passwordError}</p>}
+                {formErrors.password && <p style={{color:'red', margin:'0px'}}>{formErrors.password}</p>}
             </div>
 
             <div className='date'>
-                <label className='date_label' htmlFor="date">DOB : </label>
-                <input type="date" value={date} onChange={handleDate} placeholder='Enter Your DOB'/>
-                {dateError && <p style={{color:'red' , margin:'0px'}}>{dateError}</p>}
+                <label htmlFor="date">DOB : </label>
+                <input type="date" name='dob' value={formData.dob} onChange={handleInputChange} placeholder='Enter Your DOB'/>
+                {formErrors.dob && <p style={{color:'red' , margin:'0px'}}>{formErrors.dob}</p>}
             </div>
 
             <div className='hobbies'>
                 <label className='hobby-label'>Hobbies : </label>
                 <div className='check-boxes'>
                     <label htmlFor="reading">
-                        <input type="checkbox" className="tick-box" value="reading" onChange={handleHobbyChange} checked={hobby.includes('reading')}/>
+                        <input type="checkbox" name='hobby' value="reading" onChange={handleInputChange} checked={formData.hobbies.includes('reading')}/>
                         Reading
                     </label>
 
                     <label htmlFor="traveling">
-                        <input type="checkbox" value="traveling" onChange={handleHobbyChange} checked={hobby.includes('traveling')}/>
+                        <input type="checkbox" name='hobby' value="traveling" onChange={handleInputChange} checked={formData.hobbies.includes('traveling')}/>
                         Traveling
                     </label>
 
                     <label htmlFor="cooking">
-                        <input type="checkbox" value="cooking" onChange={handleHobbyChange} checked={hobby.includes('cooking')}/>
+                        <input type="checkbox" name='hobby' value="cooking" onChange={handleInputChange} checked={formData.hobbies.includes('cooking')}/>
                         Cooking
                     </label>
                 
                     <label htmlFor="sports">
-                        <input type="checkbox" value="sports" onChange={handleHobbyChange} checked={hobby.includes('sports')}/>
+                        <input type="checkbox" name='hobby' value="sports" onChange={handleInputChange} checked={formData.hobbies.includes('sports')}/>
                         Sports
                     </label>
                 </div>  
-                {hobbyError && (<p style={{color:"red",margin:'0px'}}>{hobbyError}</p>)}
+                {formErrors.hobbies && (<p style={{color:"red",margin:'0px'}}>{formErrors.hobbies}</p>)}
             </div>
 
             <div className='gender'>
                 <label className='gender-label'>Gender : </label>
                 
-                <input type="radio" value='male' onChange={handleGenderChange} name="gender" checked={gender==='male'}/>
+                <input type="radio" value='male' onChange={handleInputChange} name="gender" checked={formData.gender==='male'}/>
                 <label htmlFor="male">Male</label>
                     
-                <input type="radio" value='female' onChange={handleGenderChange} name="gender" checked={gender==='female'}/>
+                <input type="radio" value='female' onChange={handleInputChange} name="gender" checked={formData.gender==='female'}/>
                 <label htmlFor="female">Female</label>
                 
-                {genderError && (<p style={{color:'red',margin:'0px',}}>{genderError}</p>)}
+                {formErrors.gender && (<p style={{color:'red',margin:'0px',}}>{formErrors.gender}</p>)}
             </div>
 
             <div className='nation'>
                 <label className="nation-label" htmlFor="nation">Nationality : </label>
-                <select className='nation-select' name="nationality" value={nationality} onChange={handleNationalityChange} id="nationality">
-                    <option value="indian">Indian</option>
+                <select className='nation-select' name="nationality" value={formData.nationality} onChange={handleInputChange} id="nationality">
+                    <option value="Indian">Indian</option>
                     <option value="other">Other</option>
-                    {newNation && (<option value={newNation}>{newNation}</option>)}
+                    {formData.newNation && (<option value={formData.newNation}>{formData.newNation}</option>)}
                 </select>
 
-                {nationality==="other" && (<input type='text' value={newNation} onChange={handleNewNation}  placeholder='specify the nation' />)}
+                {formData.nationality==="other" && (<input type='text' name='newNation' value={formData.newNation} onChange={handleInputChange}  placeholder='specify the nation' />)}
                 
-                {nationality==='other' && newNationError && (<p style={{color:'red' , margin:'0px'}}>{newNationError}</p>)}
+                {formErrors.newNation && (<p style={{color:'red' , margin:'0px'}}>{formErrors.newNation}</p>)}
                 
             </div>
-            
 
             <div className='btn'>
-                <button type='submit' onClick={handleFormSubmit}>Submit</button>
+                <button type='submit'>Submit</button>
                 <button type="button" onClick={handleFormReset}>Reset</button>
             </div>
 
