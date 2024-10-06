@@ -1,50 +1,27 @@
 form{
     display: flex;
     flex-direction: column;
-    width: 600px;
-    border: 1px solid black;
-    justify-content: baseline;
+    width: auto;
+    height: auto;
+    border: 1px solid gray;
     align-items: center;
-    padding-left: 7px;
-    padding-top: 10px;
-    font-family: 'Times New Roman', Times, serif;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    padding: 10px 0 10px 7px;
+    gap: 5px;
+}
+.labels{
+    font-weight: 600;
 }
 
-.name{
+/* name */
+.name, .email, .password{
     display: flex;
     flex-direction: column;
-    height: 65px;
+    height: auto;
     text-align: left;
-    font-weight: 600;
 }
-.email{
-    display: flex;
-    flex-direction: column;
-    height: 65px;
-    text-align: left;
-    font-weight: 600;
-}
-.password{
-    display: flex;
-    flex-direction: column;
-    height: 65px;
-    text-align: left;
-    font-weight: 600;
-}
-input[type='text']{
-    width: 250px;
-    height: 20px;
-    outline: none;
-    border: 1px solid black;
-}
-input[type='email']{
-    width: 250px;
-    height: 20px;
-    outline: none;
-    border: 1px solid black;
-}
+
+input[type='text'],
+input[type='email'],
 input[type='password']{
     width: 250px;
     height: 20px;
@@ -52,14 +29,14 @@ input[type='password']{
     border: 1px solid black;
 }
 
-
-.date{
+/* date */
+.dob{
     display: flex;
     flex-direction: column;
-    height: 65px;
+    /* height: 65px; */
+    height: auto;
     text-align: left;
     padding-left: 1px;
-    font-weight: 600;
 }
 input[type='date']{
     width: 255px;
@@ -68,51 +45,46 @@ input[type='date']{
     border: 1px solid black;
 }
 
-
+/* hobbies */
 .hobbies{
     display: flex;
     flex-direction: column;
-    height: 65px;
+    height: auto;
     text-align: left;
-    padding-left: 52px;
-}
-.hobby-label{
-    font-weight: 600;
+    padding-left: 63px;
+
 }
 .check-boxes{
-    width: 308px;
-    height: 22.8px;
+    width: 320px;
+    height: 28.8px;
 }
 input[type='checkbox'] {
     width: 14px;
     height: 14px;
     cursor: pointer;
+    
 }
 
-
+/* gender */
 .gender{
     width: 260px;
-    height: 42px;
+    height: auto;
     text-align: left;
     padding-left: 3px;
 }
 input[type='radio']{
     cursor: pointer;
 }
-.gender-label{
-    font-weight: 600;
-}
 
-
+/* nation */
 .nation{
     display: flex;
     flex-direction: column;
     width: 255px;
-    height: 100px;
+    height: auto;
 }
-.nation-label{
+.nation{
     text-align: left;
-    font-weight: 600;
 }
 .nation-select{
     height: 23px;
@@ -120,22 +92,19 @@ input[type='radio']{
     border: 1px solid black;
 }
 
-
-.btn{
+/* buttons */
+.buttons-parent{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     width: 250px;
+    margin: 20px;
 }
 button{
-    background: #fc00ff;  
-    background: -webkit-linear-gradient(to right, #00dbde, #fc00ff);  
-    background: linear-gradient(to right, #00dbde, #fc00ff); 
-    
+    background-color: lightgray;
     width: 100px;
     height: 30px;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     outline: none;
@@ -147,8 +116,14 @@ button:hover{
 }
 button:active{
     opacity: 0.8;
-    background: #fc00ff;  
-    background: -webkit-linear-gradient(to right, #00dbde, #fc00ff);  
-    background: linear-gradient(to right, #00dbde, #fc00ff); 
+    background-color: lightgray;
 }
 
+/* error-message */
+.error-message{
+    color: red;
+    margin: 0;
+    padding: 0;
+    transition: 0.8s;
+    text-align: left;
+}
